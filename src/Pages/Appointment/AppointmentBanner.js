@@ -7,7 +7,7 @@ import chair_bg from '../../assets/images/bg.png';
 const AppointmentBanner = ({ date, setDate }) => {
 
     return (
-        <div className="hero min-h-screen" style={{ background: `url(${chair_bg})` }}>
+        <div className="hero min-h-screen" style={{ background: `url(${chair_bg})`, backgroundSize: 'cover' }}>
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <img src={chair} className="max-w-sm rounded-lg shadow-2xl" alt='Dentist Chair' />
                 <div>
