@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 
 const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
-    const { _id, name, slots } = treatment;
+    const { _id, name, slots, price } = treatment;
     // console.log(slots);
 
     // react firebase hooks
@@ -28,6 +28,7 @@ const BookingModal = ({ date, treatment, setTreatment, refetch }) => {
             treatment: name,
             date: formattedDate,
             slot,
+            price,
             patient: user.email,
             patientName: user.displayName,
             phone: event.target.phone.value,
