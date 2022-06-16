@@ -5,12 +5,15 @@ import UserRow from './UserRow';
 
 const Users = () => {
     // using react query
-    const { data: users, isLoading, refetch } = useQuery('users', () => fetch(`https://doctors-portal-shakshor.herokuapp.com/user`, {
+    const { data: users, isLoading, refetch } = useQuery('users', () => fetch(` https://doctors-portal-shakshor.herokuapp.com/user`, {
         method: 'GET',
         headers: {
             'authorization': `Bearer ${localStorage.getItem('accessToken')}`
         }
-    }).then(res => res.json()))
+    }).then(res => {
+        console.log(res);
+        return res.json();
+    }))
 
     // loading(length problem solving)
     if (isLoading) {

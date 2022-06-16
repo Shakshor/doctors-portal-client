@@ -7,14 +7,17 @@ const useAdmin = user => {
     useEffect(() => {
         const email = user?.email;
         if (email) {
-            fetch(`https://doctors-portal-shakshor.herokuapp.com/admin/${email}`, {
+            fetch(` https://doctors-portal-shakshor.herokuapp.com/admin/${email}`, {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json',
                     authorization: `Bearer ${localStorage.getItem('accessToken')}`
                 },
             })
-                .then(res => res.json())
+                .then(res => {
+                    // console.log('response in useAdmin', res)
+                    return res.json();
+                })
                 .then(data => {
                     setAdmin(data.admin);
                     setAdminLoading(false);
