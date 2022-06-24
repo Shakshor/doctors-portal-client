@@ -12,7 +12,7 @@ const MyAppointments = () => {
 
     useEffect(() => {
         if (user) {
-            fetch(` https://doctors-portal-shakshor.herokuapp.com/booking?patient=${user.email}`, {
+            fetch(` http://localhost:5000/booking?patient=${user.email}`, {
                 method: 'GET',
                 headers: {
                     'authorization': `Bearer ${localStorage.getItem('accessToken')}`
@@ -28,7 +28,7 @@ const MyAppointments = () => {
                     return res.json();
                 })
                 .then(data => {
-
+                    console.log(data)
                     setAppointments(data)
                 });
         }
@@ -51,7 +51,7 @@ const MyAppointments = () => {
                     </thead>
                     <tbody>
                         {
-                            appointments.map((a, index) => <tr key={index}>
+                            appointments.map((a, index) => <tr key={a._id}>
                                 <th>{index + 1}</th>
                                 <td>{a.patientName}</td>
                                 <td>{a.date}</td>
@@ -59,7 +59,11 @@ const MyAppointments = () => {
                                 <td>{a.treatment}</td>
                                 <td>
                                     {(a.price && !a.paid) && <Link to={`/dashboard/payment/${a._id}`}><button className='btn btn-xs btn-success'>pay</button></Link>}
-                                    {(a.price && a.paid) && <span className='text-success'>paid</span>}
+                                    {(a.price && a.paid) && <div>
+                                        <p><span className='text-success'>paid</span></p>
+                                        <p>Transaction Id: <span className='text-success'>{a.transactionId}</span></p>
+                                    </div>
+                                    }
                                 </td>
                             </tr>)
                         }

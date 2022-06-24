@@ -5,9 +5,15 @@ import { useEffect } from 'react';
 const CheckoutForm = ({ appointment }) => {
     // error state
     const [cardError, setCardError] = useState('');
-
+    // set success state
+    const [success, setSuccess] = useState('');
+    // spinner for whole processing in update
+    const [processing, setProcessing] = useState(false);
     // clientSecret state
     const [clientSecret, setClientSecret] = useState('');
+    // transaction id
+    const [transactionId, setTransactionId] = useState('');
+
 
     // hook
     const stripe = useStripe();
@@ -16,26 +22,26 @@ const CheckoutForm = ({ appointment }) => {
     const elements = useElements();
 
     // get price
-    const { price } = appointment;
+    const { _id, price, patient, patientName } = appointment;
 
 
     useEffect(() => {
         fetch(' http://localhost:5000/create-payment-intent', {
             method: 'POST',
             headers: {
-                'content-type': 'application/json',
+                'Content-Type': 'application/json',
                 'authorization': `Bearer ${localStorage.getItem('accessToken')}`
             },
-            body: JSON.stringify({ price })
+            body: JSON.stringify({ price }),
         })
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 return res.json()
             })
             .then(data => {
                 // console.log(data);
                 if (data?.clientSecret) {
-                    console.log(data.clientSecret);
+                    // console.log(data.clientSecret);
                     setClientSecret(data.clientSecret)
                 }
             });
@@ -84,8 +90,56 @@ const CheckoutForm = ({ appointment }) => {
 
         // -------- Process-3 ------- 
         setCardError(error?.message || '');
+        setSuccess('');
+        setProcessing(true);
 
 
+        // confirm card payment
+        const { paymentIntent, error: intentError } = await stripe.confirmCardPayment(
+            clientSecret,
+            {
+                payment_method: {
+                    card: card,
+                    billing_details: {
+                        name: patientName,
+                        email: patient,
+                    },
+                },
+            },
+        );
+
+        // set intentError
+        if (intentError) {
+            setCardError(intentError);
+            setProcessing(false);
+
+        }
+        else {
+            setCardError('');
+            setTransactionId(paymentIntent.id);
+            console.log(paymentIntent);
+            setSuccess('Congrats!Your payment is complete')
+
+            // store payment on database
+            const payment = {
+                appointment: _id,
+                transactionId: paymentIntent.id,
+
+            }
+            fetch(`http://localhost:5000/booking/${_id}`, {
+                method: 'PATCH',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': `Bearer ${localStorage.getItem('accessToken')}`
+                },
+                body: JSON.stringify(payment)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    setProcessing(false);
+                    console.log(data);
+                })
+        }
 
     }
 
@@ -109,7 +163,7 @@ const CheckoutForm = ({ appointment }) => {
                     }}
                 />
                 {/*---- || !clientSecret ---*/}
-                <button className='btn btn-success btn-sm mt-4' type="submit" disabled={!stripe}>
+                <button className='btn btn-success btn-sm mt-4' type="submit" disabled={!stripe || !clientSecret}>
                     Pay
                 </button>
             </form>
@@ -117,6 +171,14 @@ const CheckoutForm = ({ appointment }) => {
             {/* ------- error showing -------- */}
             {
                 cardError && <p className='text-red-500'>{cardError}</p>
+            }
+
+            {/*--processing messProcessing-----  */}
+            {
+                success && <div className='text-green-500'>
+                    <p>{success}</p>
+                    <p>Your transaction Id: <span className="text-orange-500">{transactionId}</span></p>
+                </div>
             }
 
         </>

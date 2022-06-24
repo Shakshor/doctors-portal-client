@@ -9,7 +9,7 @@ const AddDoctor = () => {
     const { register, formState: { errors }, handleSubmit, reset } = useForm();
 
     // react query
-    const { data: services, isLoading } = useQuery('services', () => fetch(' https://doctors-portal-shakshor.herokuapp.com/service').then(res => res.json()))
+    const { data: services, isLoading } = useQuery('services', () => fetch(' http://localhost:5000/service').then(res => res.json()))
 
     // third party storage (imgbb)
     const imageStorageKey = '3529629c25e2110da0467cf68205fc25';
@@ -45,7 +45,7 @@ const AddDoctor = () => {
                         img: img
                     }
                     // send doctor info to backend
-                    fetch(` https://doctors-portal-shakshor.herokuapp.com/doctor`, {
+                    fetch(` http://localhost:5000/doctor`, {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',
