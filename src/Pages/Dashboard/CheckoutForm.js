@@ -26,7 +26,7 @@ const CheckoutForm = ({ appointment }) => {
 
 
     useEffect(() => {
-        fetch(' http://localhost:5000/create-payment-intent', {
+        fetch('  https://doctors-portal-shakshor.herokuapp.com/create-payment-intent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const CheckoutForm = ({ appointment }) => {
                 transactionId: paymentIntent.id,
 
             }
-            fetch(`http://localhost:5000/booking/${_id}`, {
+            fetch(` https://doctors-portal-shakshor.herokuapp.com/booking/${_id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',
@@ -163,7 +163,7 @@ const CheckoutForm = ({ appointment }) => {
                     }}
                 />
                 {/*---- || !clientSecret ---*/}
-                <button className='btn btn-success btn-sm mt-4' type="submit" disabled={!stripe || !clientSecret}>
+                <button className='btn btn-success btn-sm mt-4' type="submit" disabled={!stripe || !clientSecret || success}>
                     Pay
                 </button>
             </form>
