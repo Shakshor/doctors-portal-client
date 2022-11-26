@@ -12,7 +12,7 @@ const MyAppointments = () => {
 
     useEffect(() => {
         if (user) {
-            fetch(`  https://doctors-portal-shakshor.herokuapp.com/booking?patient=${user.email}`, {
+            fetch(`  https://doctors-portal-server-eze2.onrender.com/booking?patient=${user.email}`, {
                 method: 'GET',
                 headers: {
                     'authorization': `Bearer ${localStorage.getItem('accessToken')}`

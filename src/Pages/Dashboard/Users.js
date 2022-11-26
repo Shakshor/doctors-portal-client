@@ -5,7 +5,7 @@ import UserRow from './UserRow';
 
 const Users = () => {
     // using react query
-    const { data: users, isLoading, refetch } = useQuery('users', () => fetch(`  https://doctors-portal-shakshor.herokuapp.com/user`, {
+    const { data: users, isLoading, refetch } = useQuery('users', () => fetch(`  https://doctors-portal-server-eze2.onrender.com/user`, {
         method: 'GET',
         headers: {
             'authorization': `Bearer ${localStorage.getItem('accessToken')}`

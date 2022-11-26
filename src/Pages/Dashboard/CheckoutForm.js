@@ -26,7 +26,7 @@ const CheckoutForm = ({ appointment }) => {
 
 
     useEffect(() => {
-        fetch('  https://doctors-portal-shakshor.herokuapp.com/create-payment-intent', {
+        fetch('  https://doctors-portal-server-eze2.onrender.com/create-payment-intent', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const CheckoutForm = ({ appointment }) => {
                 transactionId: paymentIntent.id,
 
             }
-            fetch(` https://doctors-portal-shakshor.herokuapp.com/booking/${_id}`, {
+            fetch(` https://doctors-portal-server-eze2.onrender.com/booking/${_id}`, {
                 method: 'PATCH',
                 headers: {
                     'content-type': 'application/json',

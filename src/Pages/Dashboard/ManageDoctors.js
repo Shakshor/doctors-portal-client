@@ -9,7 +9,7 @@ const ManageDoctors = () => {
     const [deletingDoctor, setDeletingDoctor] = useState(null);
 
     // using react query
-    const { data: doctors, isLoading, refetch } = useQuery('doctors', () => fetch('  https://doctors-portal-shakshor.herokuapp.com/doctor', {
+    const { data: doctors, isLoading, refetch } = useQuery('doctors', () => fetch('  https://doctors-portal-server-eze2.onrender.com/doctor', {
         headers: {
             authorization: `Bearer ${localStorage.getItem('accessToken')}`
         }
